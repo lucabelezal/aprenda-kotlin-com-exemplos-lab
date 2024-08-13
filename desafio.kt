@@ -1,21 +1,53 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
+fun main() {
+    val kotlinBasico = ConteudoEducacional("Kotlin Básico", nivel = Nivel.BASICO)
+    val kotlinIntermediario = ConteudoEducacional("Kotlin Intermediário", 120, nivel = Nivel.INTERMEDIARIO)
+    val kotlinDificil = ConteudoEducacional("Kotlin Avançado", 40, nivel = Nivel.DIFICIL)
 
-enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
 
-class Usuario
+    val formacaoKotlin = Formacao(
+        "Formação Kotlin",
+        listOf(kotlinBasico, kotlinIntermediario, kotlinDificil)
+    )
 
-data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
+    val usuario1 = Usuario("Alice")
+    val usuario2 = Usuario("Bob")
 
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+    formacaoKotlin.matricular(usuario1)
+    formacaoKotlin.matricular(usuario2)
 
-    val inscritos = mutableListOf<Usuario>()
-    
-    fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
-    }
+    formacaoKotlin.listarInscritos()
 }
 
-fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
+data class ConteudoEducacional(
+    var nome: String,
+    val duracao: Int = 60,
+    val nivel: Nivel
+)
+
+data class Usuario(val nome: String)
+
+data class Formacao(
+    val nome: String,
+    var conteudos: List<ConteudoEducacional>
+) {
+
+    private val inscritos = mutableListOf<Usuario>()
+
+    fun matricular(usuario: Usuario) {
+        if (!inscritos.contains(usuario)) {
+            inscritos.add(usuario)
+            println("Usuário ${usuario.nome} matriculado na formação $nome.")
+        } else {
+            println("Usuário ${usuario.nome} já está matriculado na formação $nome.")
+        }
+    }
+
+    fun listarInscritos() {
+        println("Lista de inscritos na formação $nome:")
+        for (usuario in inscritos) {
+            println(usuario.nome)
+        }
+    }
+
 }
